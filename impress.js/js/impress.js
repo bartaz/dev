@@ -24,6 +24,10 @@
 
     // HELPER FUNCTIONS
     
+    var log = function () {
+         return console.log( [].slice.call(arguments).map(function(i) { return String(i) }).join(" ") );
+    }
+    
     var pfx = (function () {
 
         var style = document.createElement('dummy').style,
@@ -225,14 +229,18 @@
         
         var lastEntered = null;
         var onStepEnter = function (step) {
+            log("onStepEnter", step.id);
             if (lastEntered !== step) {
+                log("onStepEnter > impress:stepenter", step.id)
                 triggerEvent(step, "impress:stepenter");
                 lastEntered = step;
             }
         };
         
         var onStepLeave = function (step) {
+            log("onStepLeave", step.id)
             if (lastEntered === step) {
+                log("onStepLeave > impress:stepleave", step.id)
                 triggerEvent(step, "impress:stepleave");
             }
         };
@@ -469,12 +477,14 @@
             });
             
             root.addEventListener("impress:stepenter", function (event) {
+                log("stepenter > present", event.target.id)
                 event.target.classList.remove("past");
                 event.target.classList.remove("future");
                 event.target.classList.add("present");
             }, false);
             
             root.addEventListener("impress:stepleave", function (event) {
+                log("stepleave > past", event.target.id)
                 event.target.classList.remove("present");
                 event.target.classList.add("past");
             }, false);
