@@ -242,6 +242,7 @@
             if (lastEntered === step) {
                 log("onStepLeave > impress:stepleave", step.id)
                 triggerEvent(step, "impress:stepleave");
+                lastEntered = null;
             }
         };
         
