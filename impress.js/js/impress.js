@@ -430,7 +430,7 @@
             
             expectedTransitionTarget = target.scale > currentState.scale ? root : canvas;
             
-            if (activeStep) {
+            if (activeStep && activeStep !== el) {
                 onStepLeave(activeStep);
             }
             
@@ -647,7 +647,6 @@
         
         // rescale presentation when window is resized
         window.addEventListener("resize", throttle(function () {
-            log("resize", document.querySelector(".active").id )
             // force going to active step again, to trigger rescaling
             api.goto( document.querySelector(".active"), 500 );
         }, 250), false);
