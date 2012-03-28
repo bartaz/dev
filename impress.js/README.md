@@ -20,10 +20,18 @@ It's an (un)fortunate coincidence that a Open/LibreOffice presentation tool is c
 VERSION HISTORY
 -----------------
 
+### 0.5.2 (in development)
 
-### 0.5dev
+### 0.5.1 ([browse](http://github.com/bartaz/impress.js/tree/0.5.1), [zip](http://github.com/bartaz/impress.js/zipball/0.5.1), [tar](http://github.com/bartaz/impress.js/tarball/0.5.1))
 
-**CURRENTLY IN DEVELOPMENT**
+#### BUGFIX RELEASE
+
+Changes in version 0.5 introduced a bug (#126) that was preventing clicks on links (or any clickable elements) on
+currently active step. This release fixes this issue.
+
+
+
+### 0.5 ([browse](http://github.com/bartaz/impress.js/tree/0.5), [zip](http://github.com/bartaz/impress.js/zipball/0.5), [tar](http://github.com/bartaz/impress.js/tarball/0.5))
 
 #### CHANGELOG
 
@@ -47,6 +55,18 @@ VERSION HISTORY
     - of course DOM element is still acceptable: `impress().goto( document.getElementById("overview") )`
 * and if it's not enough, `goto()` also accepts second parameter to define the transition duration in ms, for example
   `impress().goto("make-it-quick", 300)` or `impress().goto("now", 0)`
+
+#### UPGRADING FROM PREVIOUS VERSIONS
+
+In current version calling `impress()` doesn't automatically initialize the presentation. You need to call `init()`
+function from the API. So in a place were you called `impress()` to initialize impress.js simply change this call
+to `impress().init()`.
+
+Version 0.4 changed `goto` API method into `stepTo`. It turned out that `goto` is not a reserved word anymore, so it
+can be used in JavaScript. That's why version 0.5 brings it back and removes `stepTo`.
+
+So if you have been using version 0.4 and have any reference to `stepTo` API method make sure to change it to `goto`.
+
 
 
 ### 0.4.1 ([browse](http://github.com/bartaz/impress.js/tree/0.4.1), [zip](http://github.com/bartaz/impress.js/zipball/0.4.1), [tar](http://github.com/bartaz/impress.js/tarball/0.4.1))
