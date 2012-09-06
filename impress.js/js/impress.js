@@ -11,7 +11,7 @@
  *
  * ------------------------------------------------
  *  author:  Bartek Szopka
- *  version: 0.5.3 (in development)
+ *  version: 0.5.3
  *  url:     http://bartaz.github.com/impress.js/
  *  source:  http://github.com/bartaz/impress.js/
  */
@@ -217,7 +217,7 @@
     
     // IMPRESS.JS API
     
-    // And that's where intresting things will start to happen.
+    // And that's where interesting things will start to happen.
     // It's the core `impress` function that returns the impress.js API
     // for a presentation based on the element with given id ('impress'
     // by default).
@@ -229,7 +229,7 @@
         if (!impressSupported) {
             return {
                 init: empty,
-                goto: empty,
+                step: empty,
                 prev: empty,
                 next: empty
             };
@@ -426,9 +426,9 @@
         // used to reset timeout for `impress:stepenter` event
         var stepEnterTimeout = null;
         
-        // `goto` API function that moves to step given with `el` parameter (by index, id or element),
+        // `step` API function that moves to step given with `el` parameter (by index, id or element),
         // with a transition `duration` optionally given as second parameter.
-        var goto = function ( el, duration ) {
+        var step = function ( el, duration ) {
             
             if ( !initialized || !(el = getStep(el)) ) {
                 // presentation not initialized or given element is not a step
@@ -549,7 +549,7 @@
             // So I decided that I'd rather make the code simpler than use shiny new `transitionend`.
             //
             // If you want learn something interesting and see how it was done with `transitionend` go back to
-            // verison 0.5.2 of impress.js on GitHub.
+            // version 0.5.2 of impress.js: http://github.com/bartaz/impress.js/blob/0.5.2/js/impress.js
             window.clearTimeout(stepEnterTimeout);
             stepEnterTimeout = window.setTimeout(function() {
                 onStepEnter(activeStep);
@@ -563,7 +563,7 @@
             var prev = steps.indexOf( activeStep ) - 1;
             prev = prev >= 0 ? steps[ prev ] : steps[ steps.length-1 ];
             
-            return goto(prev);
+            return step(prev);
         };
         
         // `next` API function goes to next step (in document order)
@@ -571,7 +571,7 @@
             var next = steps.indexOf( activeStep ) + 1;
             next = next < steps.length ? steps[ next ] : steps[ 0 ];
             
-            return goto(next);
+            return step(next);
         };
         
         // Adding some useful classes to step elements.
@@ -627,17 +627,17 @@
             window.addEventListener("hashchange", function () {
                 // When the step is entered hash in the location is updated
                 // (just few lines above from here), so the hash change is 
-                // triggered and we would call `goto` again on the same element.
+                // triggered and we would call `step` again on the same element.
                 //
                 // To avoid this we store last entered hash and compare.
                 if (window.location.hash !== lastHash) {
-                    goto( getElementFromHash() );
+                    step( getElementFromHash() );
                 }
             }, false);
             
             // START 
             // by selecting step defined in url or first step of the presentation
-            goto(getElementFromHash() || steps[0], 0);
+            step(getElementFromHash() || steps[0], 0);
         }, false);
         
         body.classList.add("impress-disabled");
@@ -645,7 +645,7 @@
         // store and return API for given impress.js root element
         return (roots[ "impress-root-" + rootId ] = {
             init: init,
-            goto: goto,
+            step: step,
             next: next,
             prev: prev
         });
@@ -753,7 +753,7 @@
                 }
             }
             
-            if ( api.goto(target) ) {
+            if ( api.step(target) ) {
                 event.stopImmediatePropagation();
                 event.preventDefault();
             }
@@ -768,7 +768,7 @@
                 target = target.parentNode;
             }
             
-            if ( api.goto(target) ) {
+            if ( api.step(target) ) {
                 event.preventDefault();
             }
         }, false);
@@ -796,7 +796,7 @@
         // rescale presentation when window is resized
         window.addEventListener("resize", throttle(function () {
             // force going to active step again, to trigger rescaling
-            api.goto( document.querySelector(".active"), 500 );
+            api.step( document.querySelector(".active"), 500 );
         }, 250), false);
         
     }, false);
